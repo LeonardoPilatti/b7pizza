@@ -4,13 +4,22 @@ import { Product } from '@/generated/prisma';
 import Image from 'next/image';
 import { Button } from '../ui/button';
 import { decimalToMoney } from '@/lib/utils';
+import { useCart } from '@/stores/cart';
 
 type PizzaItemType = {
   data: Product;
 };
 
 export const PizzaItem = ({ data }: PizzaItemType) => {
-  const handleAddToCard = () => {};
+  const cart = useCart();
+
+  const handleAddToCard = () => {
+    cart.addItem({
+      productId: data.id,
+      quantity: 1,
+    });
+    cart.setOpen(true);
+  };
 
   return (
     <div className="text-sm bg-secondary p-4 rounded-md">
