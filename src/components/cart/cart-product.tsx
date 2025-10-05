@@ -61,7 +61,9 @@ export const CartProduct = ({ data }: CartProductProps) => {
       </div>
 
       <div className="flex-1 min-w-0 flex flex-col gap-1">
-        <h3 className="font-medium text-sm leading-tight">{product.name}</h3>
+        <h3 className="font-medium text-sm leading-tight line-clamp-2">
+          {product.name}
+        </h3>
         <div className="text-sm text-muted-foreground">
           <span aria-label={`Preço unitário ${decimalToMoney(product.price)}`}>
             {decimalToMoney(product.price)}
