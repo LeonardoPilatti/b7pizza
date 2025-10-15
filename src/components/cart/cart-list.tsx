@@ -6,8 +6,10 @@ import { useProducts } from '@/stores/products';
 import { useCallback, useEffect, useState } from 'react';
 import { CartProduct } from './cart-product';
 import { decimalToMoney } from '@/lib/utils';
+import { useAuth } from '@/stores/auth';
 
 export const CartList = () => {
+  const auth = useAuth();
   const cart = useCart();
   const products = useProducts();
 
@@ -81,13 +83,21 @@ export const CartList = () => {
         </dl>
       </section>
 
-      <Button
-        className="w-full"
-        disabled={!cart?.items || cart.items.length === 0}
-        aria-label={`Finalizar compra no valor de ${total}`}
-      >
-        Finalizar Compra
-      </Button>
+      {auth.token && (
+        <Button
+          className="w-full bg-green-700 hover:bg-green-800"
+          disabled={!cart?.items || cart.items.length === 0}
+          aria-label={`Finalizar compra no valor de ${total}`}
+        >
+          Finalizar Compra
+        </Button>
+      )}
+
+      {!auth.token && (
+        <Button className="w-full" onClick={() => auth.setOpen(true)}>
+          Login / Cadastro
+        </Button>
+      )}
     </>
   );
 };
