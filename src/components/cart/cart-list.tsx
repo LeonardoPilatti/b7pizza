@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { CartProduct } from './cart-product';
 import { decimalToMoney } from '@/lib/utils';
 import { useAuth } from '@/stores/auth';
+import { apiWithAuth } from '@/lib/axios';
 
 export const CartList = () => {
   const auth = useAuth();
@@ -31,6 +32,15 @@ export const CartList = () => {
   useEffect(() => {
     calculateSubtotal();
   }, [calculateSubtotal]);
+
+  const handleFinalizePurchase = async () => {
+    if (cart?.items?.length > 0) {
+      const orderReq = await apiWithAuth.post('/order/new', {
+        cart: cart.items,
+      });
+    }
+    // Pega os dados do pedido
+  };
 
   return (
     <>
@@ -88,6 +98,7 @@ export const CartList = () => {
           className="w-full bg-green-700 hover:bg-green-800"
           disabled={!cart?.items || cart.items.length === 0}
           aria-label={`Finalizar compra no valor de ${total}`}
+          onClick={handleFinalizePurchase}
         >
           Finalizar Compra
         </Button>
